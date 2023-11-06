@@ -142,14 +142,6 @@ class ImageReviewPage(QDialog):
                 mots_non_correspondants.append((mot, correspondance, score))
             print(mots_non_correspondants)
 
-        # Display non-matching words and their positions in the product image
-        """for i, (mot, correspondance, score) in enumerate(mots_correspondants):
-            if score < 100:
-                print(f"Non-matching word: {mot} (Score: {score})")
-                if positions_mots[i] is not None:
-                    print(f"Position in the product image: {positions_mots[i]}")
-                else:
-                    print("Position unknown")"""
         return mots_non_correspondants
 
     def retour_premiere_page(self):

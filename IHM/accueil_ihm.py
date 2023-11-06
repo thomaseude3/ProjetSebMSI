@@ -1,7 +1,9 @@
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QApplication
+from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QApplication, QLabel
+from PyQt6.QtGui import QImage, QPixmap
 import sys
 from acquisition_image.capture_image import ImageCapture
+from IHM.video_direct import CameraManager
 from IHM.deuxième_page import ImageReviewPage
 from IHM.troisième_page import ImageDifferencePage
 
@@ -24,13 +26,27 @@ class ImageCaptureApp(QWidget):
         self.capture_product_button = QPushButton("Capturer le produit")
         self.capture_product_button.clicked.connect(self.start_countdown_product)
 
-        # Pour organiser les boutons verticalement
-        layout = QVBoxLayout()
-        layout.addWidget(self.capture_label_button)
-        layout.addWidget(self.capture_product_button)
-        self.setLayout(layout)
+        # Créez un layout vertical pour les boutons
+        button_layout = QVBoxLayout()
+        button_layout.addWidget(self.capture_label_button)
+        button_layout.addWidget(self.capture_product_button)
 
+        self.image_label = QLabel(self)  # QLabel pour afficher le flux vidéo
         self.image_capture = ImageCapture()
+
+        # Créez un layout horizontal pour les boutons et l'image
+        main_layout = QHBoxLayout()
+        main_layout.addLayout(button_layout)
+        main_layout.addWidget(self.image_label)
+
+        self.setLayout(main_layout)
+
+        # Créez une instance de CameraManager
+        self.camera_manager = CameraManager()
+        self.camera_manager.frame_signal.connect(self.update_image_label)
+
+        # Démarrez le thread de la caméra
+        self.camera_manager.start()
 
         self.timer_label = QTimer(self)
         self.timer_label.timeout.connect(self.update_countdown_label)
@@ -39,6 +55,13 @@ class ImageCaptureApp(QWidget):
         self.timer_product = QTimer(self)
         self.timer_product.timeout.connect(self.update_countdown_product)
         self.countdown_product = 0
+
+    def update_image_label(self, frame):
+        image_bytearray = bytearray(frame)
+
+        # Mettez à jour l'image en direct dans le QLabel
+        self.image_label.setPixmap(QPixmap.fromImage(QImage.fromData(image_bytearray)))
+        self.image_label.setScaledContents(True)
 
     def start_countdown_label(self):
         self.countdown_label = 3  # Set the initial countdown value
@@ -56,7 +79,6 @@ class ImageCaptureApp(QWidget):
             self.timer_label.stop()
             self.capture_label_button.setText("Autre prise d'image de l'étiquette")
             self.image_capture.basler_etiquette()
-            """self.capture_label()"""
 
     def update_countdown_product(self):
         if self.countdown_product > 0:
@@ -66,7 +88,6 @@ class ImageCaptureApp(QWidget):
             self.timer_product.stop()
             self.capture_product_button.setText("Autre prise d'image du produit")
             self.image_capture.basler_produit()
-            """self.capture_product()"""
 
     def show_image_review_page(self, image1, image2):
         review_page = ImageReviewPage(image1, image2)
@@ -75,14 +96,3 @@ class ImageCaptureApp(QWidget):
         if review_page.result() == QDialog.DialogCode.Accepted:
             # Si l'utilisateur a accepté, vous pouvez revenir à la première page
             self.show()
-
-
-"""    def show_difference_page(image_path, positions, scores, different_words):
-        difference_page = ImageDifferencePage(image_path, positions, scores, different_words)
-        difference_page.exec()"""
-
-"""    ('    def capture_label(self):\n'
-     '            self.image_capture.capture_etiquette()\n'
-     '\n'
-     '        def capture_product(self):\n'
-     '            self.image_capture.capture_gravure()')"""
