@@ -84,9 +84,6 @@ class ImageReviewPage(QDialog):
 
     def traitement_images(self):
 
-        # image1_path = "acquisition_image/image_etiquette.png"
-        # image2_path = "acquisition_image/image_produit.png"
-
         image1_path = "acquisition_image/etiquette_basler.png"
         image2_path = "acquisition_image/produit_basler.png"
 
@@ -141,7 +138,6 @@ class ImageReviewPage(QDialog):
                 # Ajoutez les mots non correspondants à la liste
                 mots_non_correspondants.append((mot, correspondance, score))
             print(mots_non_correspondants)
-
         return mots_non_correspondants
 
     def retour_premiere_page(self):

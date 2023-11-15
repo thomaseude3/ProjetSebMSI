@@ -8,11 +8,12 @@ camera.Attach(tl_factory.CreateFirstDevice())
 camera.Open()
 camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
 
+
 cv2.namedWindow("Camera Live Feed", cv2.WINDOW_NORMAL)
 
 try:
     while True:
-        grab = camera.RetrieveResult(1000, pylon.TimeoutHandling_ThrowException)
+        grab = camera.RetrieveResult(50000, pylon.TimeoutHandling_ThrowException)
         if grab.GrabSucceeded():
             image = grab.Array
 

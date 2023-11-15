@@ -2,20 +2,25 @@ import cv2
 from pypylon import pylon
 from PyQt6.QtCore import QThread, Qt, pyqtSignal
 
+
 class CameraManager(QThread):
     frame_signal = pyqtSignal(bytearray)  # Signal pour transmettre le frame à la fenêtre principale
 
+    def __init__(self):
+        super().__init__()
+        self.camera = None
+
     def run(self):
         tl_factory = pylon.TlFactory.GetInstance()
-        camera = pylon.InstantCamera()
-        camera.Attach(tl_factory.CreateFirstDevice())
+        self.camera = pylon.InstantCamera()
+        self.camera.Attach(tl_factory.CreateFirstDevice())
 
-        camera.Open()
-        camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
+        #self.camera.Open()
+        #self.camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
 
         try:
             while True:
-                grab = camera.RetrieveResult(1000, pylon.TimeoutHandling_ThrowException)
+                grab = self.camera.RetrieveResult(1000, pylon.TimeoutHandling_ThrowException)
                 if grab.GrabSucceeded():
                     image = grab.Array.tobytes()
 
@@ -23,5 +28,13 @@ class CameraManager(QThread):
                     self.frame_signal.emit(bytearray(image))
 
         finally:
-            camera.StopGrabbing()
-            camera.Close()
+            self.camera.StopGrabbing()
+            self.camera.Close()
+
+    def start_live_video(self):
+        if self.camera is not None:
+            self.camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
+
+    def stop_live_video(self):
+        if self.camera is not None:
+            self.camera.StopGrabbing()

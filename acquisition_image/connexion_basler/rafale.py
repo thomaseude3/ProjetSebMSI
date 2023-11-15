@@ -8,10 +8,6 @@ import datetime
 # Fonction pour enregistrer une image avec les métadonnées
 def save_image_with_metadata(image, image_path):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    image_with_metadata = {
-        "timestamp": timestamp,
-        "exposure_time": camera.ExposureTimeAbs.GetValue(),
-    }
 
     # Enregistrez l'image avec un nom de fichier basé sur l'horodatage
     image_path = os.path.join(image_path, f"{timestamp}.png")
@@ -19,8 +15,8 @@ def save_image_with_metadata(image, image_path):
 
 
 # Paramètres de capture
-image_path = "/Users/thomaseude/Desktop/Photos_produits/4"
-total_images = 30  # Nombre total d'images à capturer
+image_path = "/Users/thomaseude/Desktop/Photos_produits_binarises/6"
+total_images = 1  # Nombre total d'images à capturer
 capture_interval = 1  # Intervalle de capture en secondes
 
 # Initialisation de la caméra
@@ -33,6 +29,7 @@ camera.StartGrabbing()
 # Configuration de l'exposition
 camera.ExposureTimeAbs.SetValue(2000)
 
+
 try:
     for i in range(total_images):
         # Attendre l'intervalle de capture
@@ -44,8 +41,13 @@ try:
             print(f"Capture de l'image {i + 1}/{total_images}")
             image = grab.Array
 
+            # Appliquer un flou gaussien pour réduire le bruit
+            blurred = cv2.GaussianBlur(image, (5, 5), 0)
+
+            binary_image = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 15, 5)
+
             # Enregistrez l'image avec les métadonnées
-            save_image_with_metadata(image, image_path)
+            save_image_with_metadata(binary_image, image_path)
 
             grab.Release()
         else:
