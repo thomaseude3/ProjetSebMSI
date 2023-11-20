@@ -160,7 +160,7 @@ class ImageCaptureApp(QWidget):
             height, width = image.shape
             center_x = width // 2
             center_y = height // 2
-            crop_size = 1000  # Taille du rectangle central en pixels (ajustez selon vos besoins)
+            crop_size = 1500  # Taille du rectangle central en pixels (ajustez selon vos besoins)
 
             # Calculez les coordonnées du coin supérieur gauche du rectangle
             top_left_x = center_x - (crop_size // 2)
@@ -193,7 +193,7 @@ class ImageCaptureApp(QWidget):
             height, width = image.shape
             center_x = width // 2
             center_y = height // 2
-            crop_size = 1100  # Taille du rectangle central en pixels (ajustez selon vos besoins)
+            crop_size = 1500  # Taille du rectangle central en pixels (ajustez selon vos besoins)
 
             # Calculez les coordonnées du coin supérieur gauche du rectangle
             top_left_x = center_x - (crop_size // 2)

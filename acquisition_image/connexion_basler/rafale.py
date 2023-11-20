@@ -15,8 +15,8 @@ def save_image_with_metadata(image, image_path):
 
 
 # Paramètres de capture
-image_path = "/Users/thomaseude/Desktop/Photos_produits_binarises/6"
-total_images = 1  # Nombre total d'images à capturer
+image_path = "/Users/thomaseude/Desktop/Photos_etiquettes"
+total_images = 10  # Nombre total d'images à capturer
 capture_interval = 1  # Intervalle de capture en secondes
 
 # Initialisation de la caméra
