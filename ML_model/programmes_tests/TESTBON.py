@@ -5,7 +5,7 @@ import os
 model = YOLO("../models/best (1).pt", "v8")
 
 # Chemin du dossier contenant les images à tester
-images_folder_path = "../../images_test"
+images_folder_path = "../../images_ia"
 
 # Résultats de détection pour chaque image
 detection_results = []

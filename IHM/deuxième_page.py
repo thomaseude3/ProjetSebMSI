@@ -1,19 +1,21 @@
-from typing import List, Tuple, Any
-
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QWidget
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtGui import QImage
-from traitement import traitement_etiquette, traitement_produit
-from ocr import ocr
 import os
 from PIL import Image
 import cv2
 import pytesseract
 from fuzzywuzzy import fuzz, process
 import re
-from IHM.troisième_page import ImageDifferencePage
+from ultralytics import YOLO
+import shutil
 
+from IHM.troisième_page import ImageDifferencePage
+from ML_model.programmes_tests.thomas import modele_yolo
+from traitement import traitement_etiquette, traitement_produit
+import ocr
+from IHM.troisieme_page2 import Analyse_Review
 
 class ImageReviewPage(QDialog):
     def __init__(self, image1_path, image2_path):
@@ -60,7 +62,8 @@ class ImageReviewPage(QDialog):
 
         self.setLayout(layout)
 
-        accept_button.clicked.connect(self.traitement_plus_ocr)
+        #accept_button.clicked.connect(self.traitement_plus_ocr)
+        accept_button.clicked.connect(self.traitement_plus_ia)
         decline_button.clicked.connect(self.retour_premiere_page)
 
         # Utilisez le signal showEvent pour obtenir la taille de la fenêtre une fois affichée
@@ -142,6 +145,44 @@ class ImageReviewPage(QDialog):
 
     def retour_premiere_page(self):
         self.accept()  # Ferme la boîte de dialogue
+
+    def modele_ia(self):
+        image1 = "acquisition_image/etiquette_basler_binarisee.png"
+        image2 = "acquisition_image/produit_basler_binarise.png"
+
+        model = YOLO("ML_Model/models/best (1).pt", "v8")
+
+        nouveau_dossier = 'acquisition_image/yolo_frames/'
+
+        model.predict(source=image1, conf=0.25, save=True, project="images_ia/")
+        model.predict(source=image2, conf=0.25, save=True, project="images_ia/")
+
+        path1 = "images_ia/predict/etiquette_basler_binarisee.png"
+        path2 = "images_ia/predict2/produit_basler_binarise.png"
+
+        # Déplacer l'image vers le nouveau dossier
+        shutil.move(path1, nouveau_dossier + "etiquette_analysee.png")
+        shutil.move(path2, nouveau_dossier + "produit_analyse.png")
+
+        # Supprimer le dossier "predict"
+        shutil.rmtree("images_ia/predict")
+        shutil.rmtree("images_ia/predict2")
+
+    def show_analysed_images(self, image1, image2):
+        review_page = Analyse_Review(image1, image2)
+        review_page.exec()
+        # Ici, vous pouvez ajouter un code pour revenir à la première page après la fermeture de la deuxième page
+        if review_page.result() == QDialog.DialogCode.Accepted:
+            # Si l'utilisateur a accepté, vous pouvez revenir à la première page
+            self.show()
+
+    def traitement_plus_ia(self):
+        image1 = "acquisition_image/yolo_frames/etiquette_analysee.png"
+        image2 = "acquisition_image/yolo_frames/produit_analyse.png"
+
+        self.traitement_images()
+        self.modele_ia()
+        self.show_analysed_images(image1, image2)
 
     def traitement_plus_ocr(self):
         self.traitement_images()

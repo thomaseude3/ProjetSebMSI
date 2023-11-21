@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QApplication, QLabel, QDialog
-from PyQt6.QtGui import QImage, QPixmap
+from PyQt6.QtGui import QImage, QPixmap, QPainter, QPen
 import sys
 from IHM.deuxième_page import ImageReviewPage
 from IHM.troisième_page import ImageDifferencePage
@@ -80,6 +80,24 @@ class ImageCaptureApp(QWidget):
 
                 # Afficher l'image dans le QLabel en ajustant son échelle pour s'adapter à la taille du QLabel
                 pixmap = QPixmap.fromImage(image_qt)
+
+                # Ajouter un rectangle rouge au milieu de l'image
+                painter = QPainter()
+                painter.begin(pixmap)
+                painter.setPen(QPen(Qt.GlobalColor.red, 2, Qt.PenStyle.SolidLine))
+
+                # Calculez les coordonnées du coin supérieur gauche du rectangle au milieu
+                center_x = width // 2
+                center_y = height // 2
+                rect_size = 500  # Ajustez la taille du rectangle selon vos besoins
+
+                top_left_x = center_x - (rect_size // 2)
+                top_left_y = center_y - (rect_size // 2)
+
+                painter.drawRect(top_left_x, top_left_y, rect_size, rect_size)
+
+                painter.end()
+
                 self.image_label.setPixmap(pixmap.scaled(self.image_label.size(), Qt.AspectRatioMode.KeepAspectRatio))
                 self.image_label.setScaledContents(True)
 
@@ -101,6 +119,24 @@ class ImageCaptureApp(QWidget):
 
                 # Afficher l'image dans le QLabel en ajustant son échelle pour s'adapter à la taille du QLabel
                 pixmap = QPixmap.fromImage(image_qt)
+
+                # Ajouter un rectangle rouge au milieu de l'image
+                painter = QPainter()
+                painter.begin(pixmap)
+                painter.setPen(QPen(Qt.GlobalColor.red, 2, Qt.PenStyle.SolidLine))
+
+                # Calculez les coordonnées du coin supérieur gauche du rectangle au milieu
+                center_x = width // 2
+                center_y = height // 2
+                rect_size = 500  # Ajustez la taille du rectangle selon vos besoins
+
+                top_left_x = center_x - (rect_size // 2)
+                top_left_y = center_y - (rect_size // 2)
+
+                painter.drawRect(top_left_x, top_left_y, rect_size, rect_size)
+
+                painter.end()
+
                 self.image_label.setPixmap(pixmap.scaled(self.image_label.size(), Qt.AspectRatioMode.KeepAspectRatio))
                 self.image_label.setScaledContents(True)
 
