@@ -8,7 +8,6 @@ def nb_lettres_mot(self):
     nb_lettres = len(mot_choisi)
     return nb_lettres
 
-
 nb_de_lettres = nb_lettres_mot(mot_choisi)
 print("Le mot", mot_choisi, "a", nb_de_lettres, "lettres")
 

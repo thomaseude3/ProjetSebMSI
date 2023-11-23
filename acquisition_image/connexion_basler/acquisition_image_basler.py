@@ -29,7 +29,7 @@ if grab.GrabSucceeded():
 
     # Enregistrez l'image recadrée sous format PNG en utilisant OpenCV
     image_path = "image_test.png"
-    cv2.imwrite(image_path, cropped_image)
+    cv2.imwrite(image_path, image)
 
 else:
     print('Grab unsucceeded')

@@ -12,7 +12,6 @@ from ultralytics import YOLO
 import shutil
 
 from IHM.troisième_page import ImageDifferencePage
-from ML_model.programmes_tests.thomas import modele_yolo
 from traitement import traitement_etiquette, traitement_produit
 import ocr
 from IHM.troisieme_page2 import Analyse_Review

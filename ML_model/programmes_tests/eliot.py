@@ -3,7 +3,7 @@ from ultralytics import YOLO
 import os
 
 # load a pretrained YOLOv8n model
-model = YOLO('best.pt', "v8")
+model = YOLO('../models/best (1).pt', "v8")
 
 # spécifiez le chemin du dossier de sauvegarde
 save_dir = "../../acquisition_image"
@@ -13,7 +13,7 @@ if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 
 # spécifiez le chemin complet pour l'enregistrement de l'image
-image_name = "test_ml.png"
+image_name = "image_test.png"
 save_path = os.path.join(save_dir, image_name)
 
 # prédisez sur une image et enregistrez les résultats

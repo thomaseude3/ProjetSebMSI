@@ -128,12 +128,13 @@ class ImageCaptureApp(QWidget):
                 # Calculez les coordonnées du coin supérieur gauche du rectangle au milieu
                 center_x = width // 2
                 center_y = height // 2
-                rect_size = 500  # Ajustez la taille du rectangle selon vos besoins
+                longueur = 700  # Ajustez la taille du rectangle selon vos besoins
+                largeur = 500
 
-                top_left_x = center_x - (rect_size // 2)
-                top_left_y = center_y - (rect_size // 2)
+                top_left_x = center_x - (longueur // 2)
+                top_left_y = center_y - (largeur // 2)
 
-                painter.drawRect(top_left_x, top_left_y, rect_size, rect_size)
+                painter.drawRect(top_left_x, top_left_y, longueur, largeur)
 
                 painter.end()
 
