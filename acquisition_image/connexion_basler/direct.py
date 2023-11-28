@@ -17,6 +17,7 @@ try:
         if grab.GrabSucceeded():
             image = grab.Array
 
+
             cv2.imshow("Camera Live Feed", image)
 
             # Vous pouvez ajouter ici du traitement supplémentaire de l'image si nécessaire
