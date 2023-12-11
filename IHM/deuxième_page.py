@@ -149,7 +149,7 @@ class ImageReviewPage(QDialog):
         image1 = "acquisition_image/etiquette_basler_binarisee.png"
         image2 = "acquisition_image/produit_basler_binarise.png"
 
-        model = YOLO("ML_Model/models/best (1).pt", "v8")
+        model = YOLO("ML_Model/models/best (2).pt", "v8")
 
         nouveau_dossier = 'acquisition_image/yolo_frames/'
 

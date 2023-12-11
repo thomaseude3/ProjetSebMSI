@@ -208,7 +208,8 @@ class ImageCaptureApp(QWidget):
 
             # Enregistrez l'image sous format PNG en utilisant OpenCV
             image_path = os.path.join(image_folder, "produit_basler.png")
-            cv2.imwrite(image_path, cropped_image)
+            #cv2.imwrite(image_path, cropped_image)
+            cv2.imwrite(image_path, image)
 
             self.product_captured = True
 
@@ -241,7 +242,8 @@ class ImageCaptureApp(QWidget):
 
             # Enregistrez l'image sous format PNG en utilisant OpenCV
             image_path = os.path.join(image_folder, "etiquette_basler.png")
-            cv2.imwrite(image_path, cropped_image)
+            # cv2.imwrite(image_path, cropped_image)
+            cv2.imwrite(image_path, image)
 
             self.label_captured = True
 

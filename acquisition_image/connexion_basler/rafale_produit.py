@@ -7,7 +7,7 @@ import datetime
 
 # Fonction pour enregistrer une image avec les métadonnées
 def save_image_with_metadata(image, image_path):
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S.%f")
 
     # Enregistrez l'image avec un nom de fichier basé sur l'horodatage
     image_path = os.path.join(image_path, f"{timestamp}.png")
@@ -15,9 +15,9 @@ def save_image_with_metadata(image, image_path):
 
 
 # Paramètres de capture
-image_path = "/Users/thomaseude/Desktop/Photos_etiquettes"
-total_images = 10  # Nombre total d'images à capturer
-capture_interval = 1  # Intervalle de capture en secondes
+image_path = "/Users/thomaseude/Desktop/labellisationfuck"
+total_images = 12  # Nombre total d'images à capturer
+capture_interval = 0.1  # Intervalle de capture en secondes
 
 # Initialisation de la caméra
 tl_factory = pylon.TlFactory.GetInstance()
@@ -47,7 +47,7 @@ try:
             binary_image = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 15, 5)
 
             # Enregistrez l'image avec les métadonnées
-            save_image_with_metadata(binary_image, image_path)
+            save_image_with_metadata(image, image_path)
 
             grab.Release()
         else:
